@@ -26,7 +26,7 @@ export class SearchStore {
         return res.json();
       })
       .then(json => {
-        console.log(json);
+        this.searchResults = json.data;
         this.isSearching = false;
       })
       .catch(err => {
