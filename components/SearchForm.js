@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { Form, Input, Button } from './form';
+import { inject, observer } from 'mobx-react';
 
+@inject('SearchStore')
+@observer
 export class SearchForm extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      searchTerm: '',
-      isSearching: false
-    }
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,31 +16,27 @@ export class SearchForm extends Component {
   handleChange(e) {
     e.preventDefault();
 
-    this.setState({
-      searchTerm: e.target.value
-    });
+    this.props.SearchStore.updateSearchTerm(e.target.value);
   }
 
   handleSubmit(e) {
     e.preventDefault();
 
     // Abort if we are already performing a search
-    if (this.state.isSearching) {
+    if (this.props.SearchStore.isSearching) {
       return;
     }
 
     if (this.isSearchTermValid()) {
-      console.log(`Searching for: ${this.state.searchTerm}`);
-      this.setState({
-        isSearching: true
-      });
+      console.log(`Searching for: ${this.props.SearchStore.searchTerm}`);
+      this.props.SearchStore.performSearch(this.props.SearchStore.searchTerm);
     } else {
       console.log('You need to provide a valid search term');
     }
   }
 
   isSearchTermValid() {
-    return this.state.searchTerm && this.state.searchTerm.trim() !== '';
+    return this.props.SearchStore.searchTerm && this.props.SearchStore.searchTerm.trim() !== '';
   }
 
   render() {
@@ -51,15 +45,15 @@ export class SearchForm extends Component {
         onSubmit={this.handleSubmit}
       >
         <Input
-          disabled={this.state.isSearching}
+          disabled={this.props.SearchStore.isSearching}
           placeholder='Search for a game'
           onChange={this.handleChange}
-          value={this.state.searchTerm}
+          value={this.props.SearchStore.searchTerm}
         />
 
         <Button
           type='submit'
-          disabled={this.state.isSearching}
+          disabled={this.props.SearchStore.isSearching}
         >
           Submit
         </Button>

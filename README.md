@@ -1,0 +1,1 @@
+Enable: Javascript › Implicit Project Config: Experimental Decorators
