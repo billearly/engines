@@ -1,6 +1,17 @@
+import styled from 'styled-components';
 import React, { Component } from 'react';
 import { Form, Input, Button } from './form';
 import { inject, observer } from 'mobx-react';
+
+const StyledSearchForm = styled.div`
+  background-color: #323232;
+  padding-bottom: 1rem;
+  padding-top: 12rem;
+
+  ${Button} {
+    margin-top: 1rem;
+  }
+`;
 
 @inject('SearchStore')
 @observer
@@ -28,7 +39,6 @@ export class SearchForm extends Component {
     }
 
     if (this.isSearchTermValid()) {
-      console.log(`Searching for: ${this.props.SearchStore.searchTerm}`);
       this.props.SearchStore.performSearch(this.props.SearchStore.searchTerm);
     } else {
       console.log('You need to provide a valid search term');
@@ -41,23 +51,25 @@ export class SearchForm extends Component {
 
   render() {
     return (
-      <Form
-        onSubmit={this.handleSubmit}
-      >
-        <Input
-          disabled={this.props.SearchStore.isSearching}
-          placeholder='Search for a game'
-          onChange={this.handleChange}
-          value={this.props.SearchStore.searchTerm}
-        />
-
-        <Button
-          type='submit'
-          disabled={this.props.SearchStore.isSearching}
+      <StyledSearchForm>
+        <Form
+          onSubmit={this.handleSubmit}
         >
-          Submit
-        </Button>
-      </Form>
+          <Input
+            disabled={this.props.SearchStore.isSearching}
+            placeholder='Search for a game'
+            onChange={this.handleChange}
+            value={this.props.SearchStore.searchTerm}
+          />
+
+          <Button
+            type='submit'
+            disabled={this.props.SearchStore.isSearching}
+          >
+            Search
+          </Button>
+        </Form>
+      </StyledSearchForm>
     );
   }
 }

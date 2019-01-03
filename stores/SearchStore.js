@@ -20,6 +20,7 @@ export class SearchStore {
   @action
   performSearch = (game) => {
     this.isSearching = true;
+    this.searchResults = [];
 
     fetch(`/api/search?game=${game}`)
       .then(res => {
