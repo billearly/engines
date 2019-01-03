@@ -13,7 +13,7 @@ export class SearchResultList extends Component {
 
   createResultItems() {
     return this.props.SearchStore.searchResults.map(result =>
-      <SearchResultItem>{result.name}</SearchResultItem>
+      <SearchResultItem {...result} />
     );
   }
 

@@ -41,7 +41,7 @@ module.exports = {
       headers: {
         'user-key': process.env.IGDB_USER_KEY
       },
-      body: `where id = ${getFormattedGameIds(games)}; fields game_engines.name,name;`
+      body: `where id = ${getFormattedGameIds(games)} & category = 0; fields game_engines.name,name;`
     })
     .then(res => {
       return res.json();
