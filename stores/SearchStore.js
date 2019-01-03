@@ -31,6 +31,7 @@ export class SearchStore {
       })
       .catch(err => {
         console.log(`An error occured: ${err}`);
+        this.isSearching = false;
       });
   }
 }
