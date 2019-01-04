@@ -28,10 +28,11 @@ export class SearchStore {
       })
       .then(json => {
         this.searchResults = json.data;
-        this.searchState = 'complete';
       })
       .catch(err => {
         console.log(`An error occured: ${err}`);
+      })
+      .finally(() => {
         this.searchState = 'complete';
       });
   }

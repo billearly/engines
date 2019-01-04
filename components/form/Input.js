@@ -5,5 +5,5 @@ export const Input = styled.input`
   border-radius: 0.25rem;
   font-family: inherit;
   padding: 0.5rem;
-  width: 50%;
+  width: 25rem;
 `;

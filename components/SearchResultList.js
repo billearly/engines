@@ -3,10 +3,15 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { SearchResultItem, Spinner } from './';
 
-const StyledSearchResultList = styled.div`
-  padding: 1rem;
-  display: flex;
-  justify-content: center;
+const SearchResults = styled.div`
+  padding: 2rem 0;
+  max-width: 50rem;
+  margin: 0 auto;
+`;
+
+const ResultGrid = styled.div`
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
 `;
 
 @inject('SearchStore')
@@ -47,9 +52,11 @@ export class SearchResultList extends Component {
 
   render() {
     return (
-      <StyledSearchResultList>
-        {this.getSearchResults()}
-      </StyledSearchResultList>
+      <SearchResults>
+        <ResultGrid>
+          {this.getSearchResults()}
+        </ResultGrid>
+      </SearchResults>
     )
   }
 }

@@ -4,12 +4,13 @@ import { Form, Input, Button } from './form';
 import { inject, observer } from 'mobx-react';
 
 const StyledSearchForm = styled.div`
-  background-color: #323232;
-  padding-bottom: 1rem;
+  background-color: #297590;
+  padding: 2rem;
   padding-top: 12rem;
+  box-shadow: 0 0.16em 0.75em #00000024;
 
   ${Button} {
-    margin-top: 1rem;
+    margin-top: 2rem;
   }
 `;
 

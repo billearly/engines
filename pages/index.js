@@ -7,7 +7,7 @@ const store = new SearchStore();
 
 const Main = styled.main`
   background-color: #accdd1;
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 const Index = () => {

@@ -1,7 +1,12 @@
 import styled from 'styled-components';
 
-export const StyledSearchResultItem = styled.li`
-  background-color: lightgray;
+export const StyledSearchResultItem = styled.div`
+  background-color: white;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+  height: 15rem;
+  box-shadow: 0 0.16em 0.75em #00000024;
 `;
 
 export const SearchResultItem = ({ id, name, game_engines }) => {
@@ -16,7 +21,7 @@ export const SearchResultItem = ({ id, name, game_engines }) => {
 
   return (
     <StyledSearchResultItem>
-      <span>{name}</span> --- Engine(s): {getEngineNames(game_engines)}
+        <span>{name}</span> --- Engine(s): {getEngineNames(game_engines)}
     </StyledSearchResultItem>
   );
 }
