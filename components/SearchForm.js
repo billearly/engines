@@ -33,8 +33,7 @@ export class SearchForm extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    // Abort if we are already performing a search
-    if (this.props.SearchStore.isSearching) {
+    if (this.props.SearchStore.searchState === 'searching') {
       return;
     }
 
@@ -56,7 +55,7 @@ export class SearchForm extends Component {
           onSubmit={this.handleSubmit}
         >
           <Input
-            disabled={this.props.SearchStore.isSearching}
+            disabled={this.props.SearchStore.searchState === 'searching'}
             placeholder='Search for a game'
             onChange={this.handleChange}
             value={this.props.SearchStore.searchTerm}
@@ -64,7 +63,7 @@ export class SearchForm extends Component {
 
           <Button
             type='submit'
-            disabled={this.props.SearchStore.isSearching}
+            disabled={this.props.SearchStore.searchState === 'searching'}
           >
             Search
           </Button>

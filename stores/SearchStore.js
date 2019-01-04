@@ -10,7 +10,7 @@ export class SearchStore {
   searchResults = [];
 
   @observable
-  isSearching = false;
+  searchState = 'none' //none, searching, complete
 
   @action
   updateSearchTerm = (updatedTerm) => {
@@ -19,7 +19,7 @@ export class SearchStore {
 
   @action
   performSearch = (game) => {
-    this.isSearching = true;
+    this.searchState = 'searching';
     this.searchResults = [];
 
     fetch(`/api/search?game=${game}`)
@@ -28,11 +28,11 @@ export class SearchStore {
       })
       .then(json => {
         this.searchResults = json.data;
-        this.isSearching = false;
+        this.searchState = 'complete';
       })
       .catch(err => {
         console.log(`An error occured: ${err}`);
-        this.isSearching = false;
+        this.searchState = 'complete';
       });
   }
 }
