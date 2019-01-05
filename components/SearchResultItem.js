@@ -26,7 +26,13 @@ const BottomHalf = styled.div`
   padding: 0.5rem;
 `;
 
-export const SearchResultItem = ({ id, name, game_engines, cover }) => {
+export const SearchResultItem = ({
+  id,
+  name,
+  game_engines,
+  cover,
+  first_release_date
+}) => {
   const getEngineNames = (engines) => {
     if (!engines) {
       return 'no engines listed';
@@ -42,11 +48,20 @@ export const SearchResultItem = ({ id, name, game_engines, cover }) => {
     }
   };
 
+  const getReleaseYear = (releaseDate) => {
+    if (!releaseDate) {
+      return;
+    }
+
+    const year = new Date(releaseDate * 1000).getFullYear();
+    return `(${year})`;
+  };
+
   return (
     <StyledSearchResultItem>
       <TopHalf bgImg={getCoverUrl(cover)}>
         <Info>
-          <span>{name}</span>
+          <span>{name} {getReleaseYear(first_release_date)}</span>
         </Info>
       </TopHalf>
       <BottomHalf>

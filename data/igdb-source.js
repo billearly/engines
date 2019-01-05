@@ -3,13 +3,17 @@ require('es6-promise').polyfill();
 
 // Returns a list of game ids
 const searchForGames = (searchTerm) => {
+  const fields = [
+    'game'
+  ];
+
   return fetch(`${process.env.IGDB_URL}/search`, {
     method: 'POST',
     headers: {
       'accept': 'application/json',
       'user-key': process.env.IGDB_USER_KEY
     },
-    body: `search "${searchTerm}"; fields game;`
+    body: `search "${searchTerm}"; fields ${fields.join(',')};`
   })
   .then(res => {
     return res.json();
@@ -18,12 +22,19 @@ const searchForGames = (searchTerm) => {
 
 // Takes a list of game ids and returns info about the games (name, engine, cover url, etc)
 const getGameInfo = (games) => {
+  const fields = [
+    'name',
+    'game_engines.name',
+    'cover.url',
+    'first_release_date'
+  ];
+
   return fetch(`${process.env.IGDB_URL}/games`, {
     method: 'POST',
     headers: {
       'user-key': process.env.IGDB_USER_KEY
     },
-    body: `where id = ${getFormattedIds(games, 'game')} & category = 0; fields game_engines.name,name,cover.url;`
+    body: `where id = ${getFormattedIds(games, 'game')} & category = 0; fields ${fields.join(',')};`
   })
   .then(res => {
     return res.json();
