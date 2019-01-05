@@ -6,7 +6,7 @@ import { SearchStore } from '../stores';
 const store = new SearchStore();
 
 const Main = styled.main`
-  background-color: #accdd1;
+  background-color: #ececec;
   min-height: 100vh;
 `;
 

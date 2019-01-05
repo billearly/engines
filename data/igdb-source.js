@@ -1,50 +1,61 @@
 require('isomorphic-fetch');
 require('es6-promise').polyfill();
 
-// Takes a list of games and produces a list if ids that the IGDB API can consume
-// Some game objects do not have a game id. Need to filter them out
-const getFormattedGameIds = (games) => {
-  const gameIds = games.reduce((result, game) => {
-    if (game.game) {
-      result.push(game.game);
+// Returns a list of game ids
+const searchForGames = (searchTerm) => {
+  return fetch(`${process.env.IGDB_URL}/search`, {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      'user-key': process.env.IGDB_USER_KEY
+    },
+    body: `search "${searchTerm}"; fields game;`
+  })
+  .then(res => {
+    return res.json();
+  });
+}
+
+// Takes a list of game ids and returns info about the games (name, engine, cover url, etc)
+const getGameInfo = (games) => {
+  return fetch(`${process.env.IGDB_URL}/games`, {
+    method: 'POST',
+    headers: {
+      'user-key': process.env.IGDB_USER_KEY
+    },
+    body: `where id = ${getFormattedIds(games, 'game')} & category = 0; fields game_engines.name,name,cover.url;`
+  })
+  .then(res => {
+    return res.json();
+  });
+}
+
+// Takes a list of entities (games, covers) and produces a list of a particular property (game id, cover id) that the IGDB API can consume
+const getFormattedIds = (entityList, property) => {
+  const entityIds = entityList.reduce((result, entity) => {
+    if (entity[property]) {
+      result.push(entity[property]);
     }
     return result;
   }, []);
 
-  if (gameIds.length === 0) {
-    throw Error('No game ids found for games');
+  if (entityIds.length === 0) {
+    throw Error(`No ${property} ids found`);
   }
 
-  return `(${gameIds.join(',')})`;
+  return `(${entityIds.join(',')})`;
 }
 
 module.exports = {
-  // Perform a search for a game
-  getGames (game) {
-    return fetch(`${process.env.IGDB_URL}/search`, {
-      method: 'POST',
-      headers: {
-        'accept': 'application/json',
-        'user-key': process.env.IGDB_USER_KEY
-      },
-      body: `search "${game}"; fields name,game;`
-    })
-    .then(res => {
-      return res.json();
-    });
-  },
+  async getAggregatedGameData (searchTerm) {
+    const searchResults = await searchForGames(searchTerm);
 
-  // Get engine info for all the games in the list
-  getEngineInfo (games) {
-    return fetch(`${process.env.IGDB_URL}/games`, {
-      method: 'POST',
-      headers: {
-        'user-key': process.env.IGDB_USER_KEY
-      },
-      body: `where id = ${getFormattedGameIds(games)} & category = 0; fields game_engines.name,name;`
-    })
-    .then(res => {
-      return res.json();
-    });
+    if (searchResults.length === 0) {
+      return [];
+    }
+
+    const gameInfo = await getGameInfo(searchResults);
+
+    return gameInfo;
   }
 }
